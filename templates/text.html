@@ -1,17 +1,24 @@
-{{ topic }} <a href="/">Takaisin</a>
+<font size="+2">Aihe: {{ message[1] }} | </font><a href="/">Takaisin</a>
 <hr>
-{{ texts }}</p>
+<i>Lähettäjä:</i> {{ message[3] }}
+<p><i>Viesti:</i> {{ message[2] }}</p>
+<i>Aika:</i> {{ message[4].strftime("%H:%M %d-%m-%Y") }}
+
 <hr>
 {% for answer in answers %}
-{{ answer.0 }}</p>
+<i>Lähettäjä:</i> {{ answer[1] }}
+<p><i>Viesti:</i> {{ answer[0] }}</p>
+<i>Aika:</i> {{ answer[2].strftime("%H:%M %d-%m-%Y") }}
+
 <hr>
 {% endfor %}
+
+{% if session.user_id %}
 <form action="/answer" method="POST">
-<p>Teksti:</p>
-<input type="text" name="text"></p>
-<p>
+<p>Viesti: <br>
+<textarea name="text" rows="5" cols="40"></textarea>
+<br>
 <input type="submit" value="Luo viesti">
-<input type="hidden" name="id" value="{{ id }}">
+<input type="hidden" name="id" value="{{ message[0] }}">
 </form>
-
-
+{% endif %}
