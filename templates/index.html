@@ -1,0 +1,44 @@
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}
+<a href="/logout">Kirjaudu ulos</a></p>
+
+<a href="/new">Uusi viesti</a>
+<hr>
+{% for message in messages %}
+{{ message.topic }} <br>
+<p>{{ message.text }}</p>
+Luotu: {{ message.created_at.strftime("%Y-%m-%d %H:%M:%S") }} <br>
+<a href="/message/{{ message.id }}">Mene viestiin</a> <br>
+<hr>
+{% endfor %}
+
+{% else %}
+    <!-- Käyttäjä ei ole kirjautunut sisään -->
+    <form id="loginForm" action="/login" method="POST">
+        <p>Tunnus:<br>
+        <input type="text" name="username"></p>
+        <p>Salasana:<br>
+        <input type="password" name="password"></p>
+        <p><input type="submit" value="Kirjaudu"></p>
+        <a href="#" onclick="showCreateAccountForm()">Luo uusi käyttäjä</a>
+    </form>
+
+    <!-- Lisätty osa uuden käyttäjän luomista varten -->
+    <div id="createAccountForm" style="display: none;">
+        <form action="/createaccount" method="POST">
+            <p>Uusi tunnus:<br>
+            <input type="text" name="new_username"></p>
+            <p>Uusi salasana:<br>
+            <input type="password" name="new_password"></p>
+            <p><input type="submit" value="Luo käyttäjä"></p>
+        </form>
+    </div>
+
+    <script>
+        function showCreateAccountForm() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('createAccountForm').style.display = 'block';
+        }
+    </script>
+{% endif %}
+

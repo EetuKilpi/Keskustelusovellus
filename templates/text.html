@@ -1,0 +1,17 @@
+{{ topic }} <a href="/">Takaisin</a>
+<hr>
+{{ texts }}</p>
+<hr>
+{% for answer in answers %}
+{{ answer.0 }}</p>
+<hr>
+{% endfor %}
+<form action="/answer" method="POST">
+<p>Teksti:</p>
+<input type="text" name="text"></p>
+<p>
+<input type="submit" value="Luo viesti">
+<input type="hidden" name="id" value="{{ id }}">
+</form>
+
+
