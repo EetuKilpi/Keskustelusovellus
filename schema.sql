@@ -11,3 +11,9 @@ CREATE TABLE answers (
     answer TEXT,
     sent_at TIMESTAMP
 );
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username TEXT,
+    password TEXT
+);
