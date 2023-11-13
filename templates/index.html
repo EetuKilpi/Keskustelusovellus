@@ -4,17 +4,28 @@
 {% else %}
 <a href="/login">Kirjaudu sisään</a>
 {% endif %}
-
+<hr>
+<font size="+1">Hae viestejä:</font><p>
+<form action="/result" method="GET">
+Hakusana: <input type="text" name="query">
+<input type="submit" value="Hae">
+</form>    
 <hr>
 {% for message in messages %}
 <font size="+2">Aihe: {{ message[1] }}</font>
 <p>
 <i>Viesti:</i> {{ message[2] }}
 <p>
-<i>Lähettäjä:</i> {{ message[3] }}
+<i>Lähettäjä:</i> {{ message[4] }}
 <p>
-<i>Aika:</i> {{ message[4].strftime("%H:%M %d-%m-%Y") }}
+<i>Aika:</i> {{ message[5].strftime("%H:%M %d-%m-%Y") }}
 <p>
-<a href="/message/{{ message[0] }}">Mene viestiin</a> Vastauksia: {{ message[5]+1 }}
+<a href="/message/{{ message[0] }}">Mene viestiin</a> Vastauksia: {{ message[5] }}<br>
+    {% if message[3] == session.user_id %}
+    <form action="/delete_message" method="POST">
+        <input type="hidden" name="message_id" value="{{ message[0] }}">
+        <input type="submit" value="Poista viesti">
+    </form>    
+    {% endif %}
 <hr>
 {% endfor %}

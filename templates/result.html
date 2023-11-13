@@ -1,0 +1,32 @@
+<font size="+1">Käytit hakusanaa: {{ query }} </font>
+<font size="+1">|</font> <a href="/">Takaisin</a>
+
+{% if messages %}
+<font size="+1">
+    <p>
+    Haulla löytyi {{ messages|length }}
+    {% if messages|length == 1 %}
+        viesti
+    {% else %}
+        viestiä
+    {% endif %}
+    </p>
+</font>
+<hr>
+{% for message in messages %}
+    <font size="+2">Aihe: {{ message[1] }}</font>
+    <p>
+    <i>Viesti:</i> {{ message[2] }}
+    <p>
+    <i>Lähettäjä:</i> {{ message[3] }}
+    <p>
+    <i>Aika:</i> {{ message[4].strftime("%H:%M %d-%m-%Y") }}
+    <p>
+    <a href="/message/{{ message[0] }}">Mene viestiin</a> Vastauksia: {{ message[5] }}
+    <hr>
+{% endfor %}
+{% else %}
+<font size="+1">
+<p>Ei viestejä haulla: {{ query }}</p>
+</font>
+{% endif %}

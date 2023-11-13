@@ -1,3 +1,6 @@
+<a href="/">Takaisin</a>
+<hr>
+{% if session.user_id %}
 <form action="/send" method="post">
     Aihe: <br>
     <textarea name="topic" rows="3" cols="40"></textarea>
@@ -7,5 +10,7 @@
     <br>
     <input type="submit" value="Lähetä">
     </form>
-    
+{% else %}
+Kirjaudu sisään <a href="/login">tästä</a>
+{% endif %}
     

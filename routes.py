@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, url_for
 import messages, users
 
 
@@ -19,7 +19,7 @@ def send():
     if messages.send(topic, text):
         return redirect("/")
     else:
-        return render_template("error.html", message="Viestin lähetys ei onnistunut",url="")
+        return render_template("error.html", message="Viestin lähetys epäonnistui",url="")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -52,7 +52,6 @@ def register():
             return redirect("/")
         else:
             return render_template("error.html", message="Rekisteröinti ei onnistunut",url="register")
-        
 
 @app.route("/message/<int:id>")
 def message(id):
@@ -68,3 +67,27 @@ def answer():
         return redirect("/message/" + str(answer_id))
     else:
         return render_template("error.html", message="Viestin lähetys ei onnistunut", url="message/"+str(answer_id))
+
+@app.route("/result")
+def result():
+    query = request.args["query"]
+    if query != "":
+        message = messages.search(query)
+    return render_template("result.html", messages=message ,query=query)
+
+@app.route("/delete_answer", methods=["POST"])
+def delete_answer():
+    answer_id = request.form["answer_id"]
+    message_id = request.form["message_id"]
+    if messages.delete_answer(answer_id):
+        return redirect("/message/" + str(message_id))
+    else:
+        return render_template("error.html", message="Sinulla ei ole oikeuksia tähän", url="message/"+str(answer_id))
+
+@app.route("/delete_message", methods=["POST"])
+def delete_message():
+    message_id = request.form["message_id"]
+    if messages.delete_message(message_id):
+        return redirect("/")
+    else:
+        return render_template("error.html", message="Sinulla ei ole oikeuksia tähän", url="")

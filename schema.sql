@@ -15,7 +15,7 @@ CREATE TABLE messages (
 
 CREATE TABLE answers (
     id SERIAL PRIMARY KEY,
-    message_id INTEGER REFERENCES messages,
+    message_id INTEGER REFERENCES messages ON DELETE CASCADE,
     answer TEXT,
     user_id INTEGER REFERENCES users,
     sent_at TIMESTAMP
