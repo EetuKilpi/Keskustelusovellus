@@ -7,7 +7,7 @@ Käyttäjille on kaksi mahdollista roolia joko ylläpitäjä tai peruskäyttäj�
 Sovelluksen ominaisuuksia:
     
   - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
-  - Käyttäjä näkee sovelluksen etusivulla listan viesteistä sekä jokaisen ketjun viestien määrän ja ketjun luonti ajankohdan.
+  - Käyttäjä näkee sovelluksen etusivulla listan viesti ketjuista sekä jokaisen ketjun viestien määrän ja ketjun luonti ajankohdan.
   - Käyttäjä voi luoda alueelle uuden ketjun antamalla ketjun otsikon ja aloitusviestin sisällön.
   - Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun.
   - Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. Käyttäjä voi myös poistaa ketjun tai viestin.
