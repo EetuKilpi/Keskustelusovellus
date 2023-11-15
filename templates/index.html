@@ -19,9 +19,17 @@ Hakusana: <input type="text" name="query">
 <i>Lähettäjä:</i> {{ message[4] }}
 <p>
 <i>Aika:</i> {{ message[5].strftime("%H:%M %d-%m-%Y") }}
+{% if message[7] == True %}
+(Muokattu)
+{% endif %}
 <p>
 <a href="/message/{{ message[0] }}">Mene viestiin</a> Vastauksia: {{ message[6] }}<br>
     {% if message[3] == session.user_id %}
+    <p>
+    <form action="/edit_message/{{ message[0] }}?user_id={{ message[3] }}" method="GET">
+        <input type="hidden" name="message_id" value="{{ message[0] }}">
+        <input type="submit" value="Muokkaa viestiä">
+    </form> 
     <form action="/delete_message" method="POST">
         <input type="hidden" name="message_id" value="{{ message[0] }}">
         <input type="submit" value="Poista viesti">

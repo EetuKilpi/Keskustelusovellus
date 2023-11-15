@@ -1,0 +1,8 @@
+<form action="/edit_answer/{{ answer.id }}" method="POST">
+    <font size="+1">Muuta vastausta: | <a href="/message/{{ answer.message_id }}">Takaisin</a></font> <br>
+        <textarea name="new_text" rows="5" cols="40">{{ answer.answer }}</textarea>
+        <input type="hidden" name="message_id" value="{{ answer.message_id }}">
+        <br>
+        <input type="submit" value="Tallenna muutokset">
+    </p>
+</form>

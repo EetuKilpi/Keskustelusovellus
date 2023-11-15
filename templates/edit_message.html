@@ -1,0 +1,10 @@
+<form action="/edit_message/{{ message.id }}" method="POST">
+    <font size="+1">Muuta aihetta: | <a href="/">Takaisin</a></font> <br>
+    <textarea name="new_topic" rows="3" cols="40">{{ message.topic }}</textarea>
+    <br>
+    Muuta viestiä: <br>
+    <textarea name="new_text" rows="5" cols="40">{{ message.text }}</textarea>
+    <br>
+    <input type="submit" value="Tallenna muutokset">
+    </p>
+</form>

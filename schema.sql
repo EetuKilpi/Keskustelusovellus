@@ -10,6 +10,7 @@ CREATE TABLE messages (
     text TEXT,
     user_id INTEGER REFERENCES users,
     sent_at TIMESTAMP
+    edited BOOLEAN DEFAULT FALSE;
 );
 
 
@@ -19,4 +20,5 @@ CREATE TABLE answers (
     answer TEXT,
     user_id INTEGER REFERENCES users,
     sent_at TIMESTAMP
+    edited BOOLEAN DEFAULT FALSE;
 );

@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 import users
 
 def get_list_with_answers_count():
-    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, COUNT(A.id) as answer_count "
+    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, COUNT(A.id) as answer_count, M.edited "
                "FROM messages M "
                "JOIN users U ON M.user_id = U.id "
                "LEFT JOIN answers A ON M.id = A.message_id "
@@ -24,7 +24,7 @@ def send(topic, texts):
         return False
 
 def get_message(id):
-    sql = text("SELECT M.id, M.topic, M.text, U.username, M.sent_at FROM messages M, users U WHERE M.user_id=U.id AND M.id=:id")
+    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, M.edited FROM messages M, users U WHERE M.user_id=U.id AND M.id=:id")
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()
 
@@ -41,12 +41,12 @@ def send_answer(answer_id, texts):
         return False
 
 def get_answer(id):
-    sql = text("SELECT A.id, A.answer, A.user_id, U.username, A.sent_at FROM answers A, users U WHERE A.user_id=U.id AND A.message_id=:id ORDER BY A.id")
+    sql = text("SELECT A.id, A.answer, A.user_id, U.username, A.sent_at, A.edited FROM answers A, users U WHERE A.user_id=U.id AND A.message_id=:id ORDER BY A.id")
     result = db.session.execute(sql, {"id":id})
     return result.fetchall()
 
 def search(query):
-    sql = text("SELECT M.id, M.topic, M.text, U.username, M.sent_at, COUNT(A.id) as answer_count "
+    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, COUNT(A.id) as answer_count, M.edited "
                "FROM messages M "
                "JOIN users U ON M.user_id = U.id "
                "LEFT JOIN answers A ON M.id = A.message_id "
@@ -86,4 +86,43 @@ def delete_message(message_id):
         return True
     else:
         return False
+
+
+def allow_edit(user_id, id, message_or_answer):
+    user_id = users.user_id()
+    if user_id == 0:
+        return False
+    if message_or_answer == 0:
+        sql = text("SELECT user_id FROM messages WHERE id = :message_id")
+        result = db.session.execute(sql, {"message_id": id})
+    elif message_or_answer == 1:
+        sql = text("SELECT user_id FROM answers WHERE id = :answer_id")
+        result = db.session.execute(sql, {"answer_id": id})
+    allowed_user_id = result.scalar()
+    if allowed_user_id == user_id:
+        return True
+    else:
+        return False
+
+def edit_answer(answer_id):
+    sql = text("SELECT * FROM answers WHERE id = :answer_id")
+    result = db.session.execute(sql, {"answer_id": answer_id})
+    return result.fetchone()
+
+def update_answer(answer_id, new_text):
+    sql_update = text("UPDATE answers SET answer = :new_text, sent_at = NOW(), edited = TRUE WHERE id = :answer_id")
+    db.session.execute(sql_update, {"new_text": new_text, "answer_id": answer_id})
+    db.session.commit()
+    return True
+
+def edit_message(message_id):
+    sql = text("SELECT * FROM messages WHERE id = :message_id")
+    result = db.session.execute(sql, {"message_id": message_id})
+    return result.fetchone()
+
+def update_message(message_id, new_topic, new_text):
+    sql_update = text("UPDATE messages SET topic = :new_topic, text = :new_text, sent_at = NOW(), edited = TRUE WHERE id = :message_id")
+    db.session.execute(sql_update, {"new_topic": new_topic, "new_text": new_text, "message_id": message_id})
+    db.session.commit()
+    return True
 
