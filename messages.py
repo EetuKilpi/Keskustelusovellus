@@ -56,39 +56,18 @@ def search(query):
     return result.fetchall()
 
 def delete_answer(answer_id):
-    user_id = users.user_id()
-    if user_id == 0:
-        return False
-    sql = text("SELECT user_id FROM answers WHERE id = :answer_id")
-    result = db.session.execute(sql, {"answer_id": answer_id})
-    answer_user_id = result.scalar()
-
-    if user_id == answer_user_id:
-        sql_delete = text("DELETE FROM answers WHERE id = :answer_id")
-        db.session.execute(sql_delete, {"answer_id": answer_id})
-        db.session.commit()
-        return True
-    else:
-        return False
+    sql_delete = text("DELETE FROM answers WHERE id = :answer_id")
+    db.session.execute(sql_delete, {"answer_id": answer_id})
+    db.session.commit()
+    return True
 
 def delete_message(message_id):
-    user_id = users.user_id()
-    if user_id == 0:
-        return False
-    sql = text("SELECT user_id FROM messages WHERE id = :message_id")
-    result = db.session.execute(sql, {"message_id": message_id})
-    message_user_id = result.scalar()
+    sql_delete = text("DELETE FROM messages WHERE id = :message_id")
+    db.session.execute(sql_delete, {"message_id": message_id})
+    db.session.commit()
+    return True
 
-    if user_id == message_user_id:
-        sql_delete = text("DELETE FROM messages WHERE id = :message_id")
-        db.session.execute(sql_delete, {"message_id": message_id})
-        db.session.commit()
-        return True
-    else:
-        return False
-
-
-def allow_edit(user_id, id, message_or_answer):
+def allow_user(user_id, id, message_or_answer):
     user_id = users.user_id()
     if user_id == 0:
         return False

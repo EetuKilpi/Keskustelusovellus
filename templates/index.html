@@ -29,8 +29,12 @@ Hakusana: <input type="text" name="query">
     <form action="/edit_message/{{ message[0] }}?user_id={{ message[3] }}" method="GET">
         <input type="hidden" name="message_id" value="{{ message[0] }}">
         <input type="submit" value="Muokkaa viestiä">
-    </form> 
+    </form>
+    {% endif %} 
+    {% if message[3] == session.user_id or admin == True %}
+    <p>
     <form action="/delete_message" method="POST">
+        <input type="hidden" name="user_id" value="{{ message[3] }}">
         <input type="hidden" name="message_id" value="{{ message[0] }}">
         <input type="submit" value="Poista viesti">
     </form>    

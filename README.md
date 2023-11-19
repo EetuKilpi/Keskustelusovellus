@@ -12,16 +12,25 @@ Sovelluksen ominaisuuksia:
   - Käyttäjä voi kirjoittaa uuden viestin olemassa olevaan ketjuun.
   - Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. Käyttäjä voi myös poistaa ketjun tai viestin.
   - Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana.
-  - Ylläpitäjä voi lisätä ja poistaa keskustelualueita.(Kesken)
+  - Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
   - Ylläpitäjä voi luoda salaisen alueen ja määrittää, keillä käyttäjillä on pääsy alueelle.(Kesken)
 
 
-## Käynnistys ohjeet:
+## Käynnistys ohjeet
 Kloonaa tämä repositorio omalle koneellesi ja siirry sen juurikansioon. Luo kansioon `.env`-tiedosto ja määritä sen sisältö seuraavanlaiseksi:
 
 ```bash
 DATABASE_URL=<tietokannan-paikallinen-osoite>
 SECRET_KEY=<salainen-avain>
+```
+Missä `DATEBASE_URL` on muotoa `postgresql:///user`
+ja `SECRET_KEY` on satunnaisesti luotu merkkijono, jonka voi luoda esim. seuraavasti:
+
+```bash
+$ python3
+>>> import secrets
+>>> secrets.token_hex(16)
+'salainen-avain'
 ```
 
 Seuraavaksi aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet komennoilla
@@ -42,4 +51,17 @@ Nyt voit käynnistää sovelluksen komennolla
 
 ```bash
 $ flask run
+```
+
+
+## Ylläpito oikeuksien asettamien
+En keksinyt mitään järkevää tapaa tähän itse sovelluksessa, joten ylläpito oikeudet pitää asettaa muokkaamalla arova tietokannassa manuaalisesti
+
+Seuraavasti:
+
+```bash
+$ psql
+user=# UPDATE users
+SET admin = TRUE
+WHERE username = '<käyttäjänimi>';
 ```

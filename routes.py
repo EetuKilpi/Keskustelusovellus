@@ -6,7 +6,8 @@ import messages, users
 @app.route("/")
 def index():
     messages_with_count = messages.get_list_with_answers_count()
-    return render_template("index.html", messages=messages_with_count)
+    admin = users.is_admin()
+    return render_template("index.html", messages=messages_with_count, admin=admin)
 
 @app.route("/new")
 def new():
@@ -57,7 +58,8 @@ def register():
 def message(id):
     list = messages.get_message(id)
     list2 = messages.get_answer(id)
-    return render_template("answer.html", message=list, answers=list2)
+    admin = users.is_admin()
+    return render_template("answer.html", message=list, answers=list2, admin=admin)
 
 @app.route("/answer", methods=["POST"])
 def answer():
@@ -71,23 +73,38 @@ def answer():
 @app.route("/result")
 def result():
     query = request.args["query"]
+    admin = users.is_admin()
     if query != "":
         message = messages.search(query)
-    return render_template("result.html", messages=message ,query=query)
+    return render_template("result.html", messages=message ,query=query, admin=admin)
 
 @app.route("/delete_answer", methods=["POST"])
 def delete_answer():
+    allow = False
     answer_id = request.form["answer_id"]
     message_id = request.form["message_id"]
-    if messages.delete_answer(answer_id):
+    user_id = request.form["user_id"]
+    if users.is_admin():
+        allow = True
+    if messages.allow_user(user_id, answer_id, 1):
+        allow = True
+    if allow == True:
+        messages.delete_answer(answer_id)
         return redirect("/message/" + str(message_id))
     else:
         return render_template("error.html", message="Sinulla ei ole oikeuksia tähän", url="message/"+str(message_id))
 
 @app.route("/delete_message", methods=["POST"])
 def delete_message():
+    allow = False
+    user_id = request.form["user_id"]
     message_id = request.form["message_id"]
-    if messages.delete_message(message_id):
+    if users.is_admin():
+        allow = True
+    if messages.allow_user(user_id, message_id, 0):
+        allow = True
+    if allow == True:
+        messages.delete_message(message_id)
         return redirect("/")
     else:
         return render_template("error.html", message="Sinulla ei ole oikeuksia tähän", url="")
@@ -97,7 +114,7 @@ def edit_answer(answer_id):
     message_id = request.args.get("message_id")
     user_id = request.args.get("user_id")
     
-    if messages.allow_edit(user_id, answer_id, 1):
+    if messages.allow_user(user_id, answer_id, 1):
         if request.method == "GET":
                 answer = messages.edit_answer(answer_id)
                 return render_template("edit_answer.html", answer=answer)
@@ -116,7 +133,7 @@ def edit_answer(answer_id):
 def edit_message(message_id):
     user_id = request.args.get("user_id")
     
-    if messages.allow_edit(user_id, message_id, 0):
+    if messages.allow_user(user_id, message_id, 0):
         if request.method == "GET":
                 message = messages.edit_message(message_id)
                 return render_template("edit_message.html", message=message)
