@@ -30,7 +30,7 @@ ja `SECRET_KEY` on satunnaisesti luotu merkkijono, jonka voi luoda esim. seuraav
 $ python3
 >>> import secrets
 >>> secrets.token_hex(16)
-'salainen-avain'
+'<salainen-avain>'
 ```
 
 Seuraavaksi aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet komennoilla
