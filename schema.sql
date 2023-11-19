@@ -9,8 +9,8 @@ CREATE TABLE messages (
     topic TEXT,
     text TEXT,
     user_id INTEGER REFERENCES users,
-    sent_at TIMESTAMP
-    edited BOOLEAN DEFAULT FALSE;
+    sent_at TIMESTAMP,
+    edited BOOLEAN DEFAULT FALSE
 );
 
 
@@ -19,6 +19,6 @@ CREATE TABLE answers (
     message_id INTEGER REFERENCES messages ON DELETE CASCADE,
     answer TEXT,
     user_id INTEGER REFERENCES users,
-    sent_at TIMESTAMP
-    edited BOOLEAN DEFAULT FALSE;
+    sent_at TIMESTAMP,
+    edited BOOLEAN DEFAULT FALSE
 );
