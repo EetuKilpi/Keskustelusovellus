@@ -51,7 +51,7 @@ def register():
         if users.register(username, password1):
             return redirect("/")
         else:
-            return render_template("error.html", message="Rekisteröinti ei onnistunut",url="register")
+            return render_template("error.html", message="Rekisteröinti ei onnistunut / Käyttäjänimi on jo varattu",url="register")
 
 @app.route("/message/<int:id>")
 def message(id):
