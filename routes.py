@@ -13,14 +13,21 @@ def index():
 def new():
     return render_template("new.html")
 
+@app.route("/new_private")
+def new_private():
+    admin = users.is_admin()
+    return render_template("new_private.html", admin = admin)
+
 @app.route("/send", methods=["POST"])
 def send():
     topic = request.form["topic"]
     text = request.form["text"]
-    if messages.send(topic, text):
+    privacy = request.form["privacy"]
+    if messages.send(topic, text, privacy):
         return redirect("/")
     else:
         return render_template("error.html", message="Viestin lähetys epäonnistui",url="")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -74,9 +81,13 @@ def answer():
 def result():
     query = request.args["query"]
     admin = users.is_admin()
+    counter = 0
     if query != "":
         message = messages.search(query)
-    return render_template("result.html", messages=message ,query=query, admin=admin)
+        for i in message:
+            if i[8] == True:
+                counter += 1
+    return render_template("result.html", messages=message ,query=query, admin=admin, counter=counter)
 
 @app.route("/delete_answer", methods=["POST"])
 def delete_answer():

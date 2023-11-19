@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 import users
 
 def get_list_with_answers_count():
-    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, COUNT(A.id) as answer_count, M.edited "
+    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, COUNT(A.id) as answer_count, M.edited, M.private "
                "FROM messages M "
                "JOIN users U ON M.user_id = U.id "
                "LEFT JOIN answers A ON M.id = A.message_id "
@@ -11,20 +11,20 @@ def get_list_with_answers_count():
     result = db.session.execute(sql)
     return result.fetchall()
 
-def send(topic, texts):
+def send(topic, texts, privacy):
     user_id = users.user_id()
     if user_id == 0:
         return False
     if topic != "" and texts != "":
-        sql = text("INSERT INTO messages (topic, text, user_id, sent_at) VALUES (:topic, :text, :user_id, NOW())")
-        db.session.execute(sql, {"topic":topic, "text":texts, "user_id":user_id})
+        sql = text("INSERT INTO messages (topic, text, user_id, sent_at, private) VALUES (:topic, :text, :user_id, NOW(), :private)")
+        db.session.execute(sql, {"topic":topic, "text":texts, "user_id":user_id, "private":privacy})        
         db.session.commit()
         return True
     else:
         return False
 
 def get_message(id):
-    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, M.edited FROM messages M, users U WHERE M.user_id=U.id AND M.id=:id")
+    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, M.edited, M.private FROM messages M, users U WHERE M.user_id=U.id AND M.id=:id")
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()
 
@@ -46,7 +46,7 @@ def get_answer(id):
     return result.fetchall()
 
 def search(query):
-    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, COUNT(A.id) as answer_count, M.edited "
+    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, COUNT(A.id) as answer_count, M.edited, M.private "
                "FROM messages M "
                "JOIN users U ON M.user_id = U.id "
                "LEFT JOIN answers A ON M.id = A.message_id "

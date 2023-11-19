@@ -11,7 +11,8 @@ CREATE TABLE messages (
     text TEXT,
     user_id INTEGER REFERENCES users,
     sent_at TIMESTAMP,
-    edited BOOLEAN DEFAULT FALSE
+    edited BOOLEAN DEFAULT FALSE,
+    private BOOLEAN DEFAULT FALSE
 );
 
 

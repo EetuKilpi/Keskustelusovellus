@@ -1,8 +1,10 @@
 <font size="+1">Käytit hakusanaa: {{ query }} </font>
 <font size="+1">|</font> <a href="/">Takaisin</a>
 
+
 {% if messages %}
 <font size="+1">
+{% if admin == True %}
     <p>
     Haulla löytyi {{ messages|length }}
     {% if messages|length == 1 %}
@@ -11,9 +13,25 @@
         viestiä
     {% endif %}
     </p>
+{% else %}
+    <p>
+    {% set messagelength = messages|length - counter %}
+    {% if messagelength == 1 %}
+    Haulla löytyi {{ messages|length - counter }}
+        viesti
+    {% elif messagelength == 0 %}
+        Ei viestejä haulla: {{ query }}
+    {% else %}
+    Haulla löytyi {{ messages|length - counter }}
+        viestiä
+    </p>
+    {% endif %}
+{% endif %}
 </font>
 <hr>
 {% for message in messages %}
+{% if message[8] == True and admin == False%}
+{% else %}
     <font size="+2">Aihe: {{ message[1] }}</font>
     <p>
     <i>Viesti:</i> {{ message[2] }}
@@ -42,6 +60,7 @@
     </form>    
     {% endif %}
     <hr>
+{% endif %}
 {% endfor %}
 {% else %}
 <font size="+1">
