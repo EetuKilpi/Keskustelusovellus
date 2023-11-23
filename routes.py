@@ -5,7 +5,7 @@ import messages, users
 
 @app.route("/")
 def index():
-    messages_with_count = messages.get_list_with_answers_count()
+    messages_with_count = messages.get_list()
     admin = users.is_admin()
     return render_template("index.html", messages=messages_with_count, admin=admin)
 

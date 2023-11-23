@@ -51,12 +51,22 @@ Sinulla ei ole oikeuksia nähdä tätä keskustelua | <a href="/">Takaisin</a>
     {% endfor %}
 
     {% if session.user_id %}
-        <form action="/answer" method="POST">
+        <form action="/answer" method="POST" onsubmit="return check(this)">
             <p>Uusi vastaus: <br>
                 <textarea name="text" rows="5" cols="40"></textarea>
                 <br>
                 <input type="submit" value="Lähetä">
                 <input type="hidden" name="id" value="{{ message[0] }}">
         </form>
+
+        <script>
+            function check(form) {
+                if (form.text.value.length > 5000) {
+                    alert("Viesti on liian pitkä");
+                    return false;
+                }
+                return true;
+            }
+            </script>
     {% endif %}
 {% endif %}

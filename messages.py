@@ -2,7 +2,7 @@ from db import db
 from sqlalchemy.sql import text
 import users
 
-def get_list_with_answers_count():
+def get_list():
     sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, COUNT(A.id) as answer_count, M.edited, M.private "
                "FROM messages M "
                "JOIN users U ON M.user_id = U.id "
@@ -50,7 +50,7 @@ def search(query):
                "FROM messages M "
                "JOIN users U ON M.user_id = U.id "
                "LEFT JOIN answers A ON M.id = A.message_id "
-               "WHERE topic LIKE :query "
+               "WHERE lower(topic) LIKE lower(:query) "
                "GROUP BY M.id, U.username ORDER BY M.id")
     result = db.session.execute(sql, {"query": "%" + query + "%"})
     return result.fetchall()

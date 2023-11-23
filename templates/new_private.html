@@ -1,7 +1,7 @@
 {% if admin == True %}
 <a href="/">Takaisin</a>
 <hr>
-<form action="/send" method="post">
+<form action="/send" method="post" onsubmit="return check(this)">
     <input type="hidden" name="privacy" value=True>
     Aihe: <br>
     <textarea name="topic" rows="3" cols="40"></textarea>
@@ -11,6 +11,21 @@
     <br>
     <input type="submit" value="Lähetä">
     </form>
+
+    <script>
+        function check(form) {
+            if (form.topic.value.length > 100) {
+                alert("Otsikko on liian pitkä");
+                return false;
+            }
+            if (form.text.value.length > 5000) {
+                alert("Viesti on liian pitkä");
+                return false;
+            }
+            return true;
+        }
+        </script>
+
 {% else %}
 Sinulla ei ole tähän oikeuksia <a href="/">Takaisin</a>
 {% endif %}
