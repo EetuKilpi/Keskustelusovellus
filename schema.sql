@@ -24,3 +24,9 @@ CREATE TABLE answers (
     sent_at TIMESTAMP,
     edited BOOLEAN DEFAULT FALSE
 );
+
+CREATE TABLE favorites (
+    id SERIAL PRIMARY KEY,
+    message_id INTEGER UNIQUE REFERENCES messages ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users
+);

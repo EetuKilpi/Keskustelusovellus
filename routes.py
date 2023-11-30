@@ -5,9 +5,13 @@ import messages, users
 
 @app.route("/")
 def index():
-    messages_with_count = messages.get_list()
+    message = messages.get_list()
+    user_id = users.user_id()
+    if user_id != 0:
+        favorite = messages.get_favorite_message_ids(user_id)
+        print(favorite)
     admin = users.is_admin()
-    return render_template("index.html", messages=messages_with_count, admin=admin)
+    return render_template("index.html", messages=message, favorites=favorite, admin=admin)
 
 @app.route("/new")
 def new():
@@ -158,3 +162,31 @@ def edit_message(message_id):
                     return render_template("error.html", message="Sinulla ei ole oikeuksia tähän", url="")
     else:   
         return render_template("error.html", message="Sinulla ei ole oikeuksia tähän", url="")
+
+@app.route("/add_favorite", methods=["POST"])
+def favorite_message():
+    user_id = request.form["user_id"]
+    message_id = request.form["message_id"]
+    if messages.add_favorite(message_id, user_id):
+        return redirect("/")
+    else:
+        return render_template("error.html", message="Viestin lisääminen epäonnistui", url="")
+
+@app.route("/favorites")
+def favorites():
+    user_id = users.user_id()
+    if user_id != 0:
+        favorite_messages = messages.get_favorite_messages(user_id)
+        return render_template("favorites.html", messages=favorite_messages)
+    else:
+        return render_template("error.html", message="Kirjaudu ensin sisään nähdäksesi suosikkiviestisi", url="login")
+
+@app.route("/remove_favorite", methods=["POST"])
+def remove_favorite():
+    user_id = request.form["user_id"]
+    message_id = request.form["message_id"]
+    source = request.form["source"]
+    if messages.remove_favorite(message_id, user_id):
+        return redirect(source)
+    else:
+        return render_template("error.html", message="Suosikin poistaminen epäonnistui", url="favorites")

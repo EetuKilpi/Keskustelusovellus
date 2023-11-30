@@ -105,3 +105,38 @@ def update_message(message_id, new_topic, new_text):
     db.session.commit()
     return True
 
+def add_favorite(message_id, user_id):
+    try:
+        sql = text("INSERT INTO favorites (message_id, user_id) VALUES (:message_id, :user_id)")
+        db.session.execute(sql, {"message_id": message_id, "user_id": user_id})        
+        db.session.commit()
+    except:
+        return False
+    return True
+
+def get_favorite_messages(user_id):
+    sql = text("SELECT M.id, M.topic, M.text, M.user_id, U.username, M.sent_at, COUNT(A.id) as answer_count, M.edited, M.private "
+               "FROM messages M "
+               "JOIN users U ON M.user_id = U.id "
+               "LEFT JOIN answers A ON M.id = A.message_id "
+               "JOIN favorites F ON M.id = F.message_id "
+               "WHERE F.user_id = :user_id "
+               "GROUP BY M.id, U.username ORDER BY M.id")
+    result = db.session.execute(sql, {"user_id": user_id})
+    return result.fetchall()
+
+def get_favorite_message_ids(user_id):
+    sql = text("SELECT M.id "
+               "FROM messages M "
+               "JOIN favorites F ON M.id = F.message_id "
+               "WHERE F.user_id = :user_id ")
+    result = db.session.execute(sql, {"user_id": user_id})
+    return [record[0] for record in result.fetchall()]
+
+
+def remove_favorite(message_id, user_id):
+    sql_delete = text("DELETE FROM favorites WHERE message_id = :message_id AND user_id = :user_id")
+    db.session.execute(sql_delete, {"message_id": message_id, "user_id": user_id})
+    db.session.commit()
+    return True
+

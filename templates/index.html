@@ -26,6 +26,7 @@ Hakusana: <input type="text" name="query">
     }
     </script>
 
+<a href="/favorites">Mene suosikkeihisi</a>
 <hr>
 {% for message in messages %}
 {% if message[8] == True and admin == False%}
@@ -33,6 +34,23 @@ Hakusana: <input type="text" name="query">
     <font size="+2">Aihe: {{ message[1] }}</font>
     {% if message[8] == True%}
      (Yksityinen)
+    {% endif %}
+    {% if session.user_id %}
+        {% set is_favorite = message[0] in favorites %}
+            {% if is_favorite %}
+                <form action="/remove_favorite" method="POST">
+                    <input type="hidden" name="message_id" value="{{ message[0] }}">
+                    <input type="hidden" name="user_id" value="{{ session.user_id }}">
+                    <input type="hidden" name="source" value="/">
+                    <input type="submit" value="Poista suosikeista">
+                </form>
+            {% else %}
+                <form action="/add_favorite" method="POST">
+                    <input type="hidden" name="message_id" value="{{ message[0] }}">
+                    <input type="hidden" name="user_id" value="{{ session.user_id }}">
+                    <input type="submit" value="Lisää suosikkeihin">
+                </form>
+            {% endif %}
     {% endif %}
     <p>
     <i>Viesti:</i> {{ message[2] }}

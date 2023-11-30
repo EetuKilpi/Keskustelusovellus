@@ -1,0 +1,48 @@
+{% if session.user_id %}
+<font size="+1">Käyttäjän {{ session.username }} suosikki viestit | </font><a href="/">Takaisin</a>
+<hr>
+    {% for message in messages %}
+    {% if message[8] == True and admin == False%}
+    {% else %}
+        <font size="+2">Aihe: {{ message[1] }}</font>
+        {% if message[8] == True%}
+        (Yksityinen)
+        {% endif %}
+        <form action="/remove_favorite" method="POST">
+            <input type="hidden" name="user_id" value="{{ session.user_id }}">
+            <input type="hidden" name="message_id" value="{{ message[0] }}">
+            <input type="hidden" name="source" value="/favorites">
+            <input type="submit" value="Poista suosikeista">
+        </form>
+        <p>
+        <i>Viesti:</i> {{ message[2] }}
+        <p>
+        <i>Lähettäjä:</i> {{ message[4] }}
+        <p>
+        <i>Aika:</i> {{ message[5].strftime("%H:%M %d-%m-%Y") }}
+        {% if message[7] == True %}
+        (Muokattu)
+        {% endif %}
+        <p>
+        <a href="/message/{{ message[0] }}">Mene viestiin</a> Vastauksia: {{ message[6] }}<br>
+            {% if message[3] == session.user_id %}
+            <p>
+            <form action="/edit_message/{{ message[0] }}?user_id={{ message[3] }}" method="GET">
+                <input type="hidden" name="message_id" value="{{ message[0] }}">
+                <input type="submit" value="Muokkaa viestiä">
+            </form>
+            {% endif %} 
+            {% if message[3] == session.user_id or admin == True %}
+            <p>
+            <form action="/delete_message" method="POST">
+                <input type="hidden" name="user_id" value="{{ message[3] }}">
+                <input type="hidden" name="message_id" value="{{ message[0] }}">
+                <input type="submit" value="Poista viesti">
+            </form>    
+            {% endif %}
+        <hr>
+    {% endif %}
+    {% endfor %}
+{% else %}
+<a href="/login">Kirjaudu sisään</a> | <a href="/register">Luo uusi tunnus</a>
+{% endif %}
