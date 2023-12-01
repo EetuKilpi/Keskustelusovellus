@@ -14,6 +14,14 @@ Salasana uudestaan: <input type="password" name="password2">
             alert("Tunnuksen nimi on liian pitkä");
             return false;
         }
+        if (form.username.value.length < 1) {
+            alert("Tunnuksen nimi on liian lyhyt");
+            return false;
+        }
+        if (form.password1.value.length < 1) {
+            alert("Salasana on liian lyhyt");
+            return false;
+        }
         return true;
     }
     </script>

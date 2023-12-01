@@ -7,7 +7,9 @@
 <font size="+1">|</font> 
 <a href="/logout">Kirjaudu ulos</a>
 {% else %}
-<a href="/login">Kirjaudu sisään</a> | <a href="/register">Luo uusi tunnus</a>
+<a href="/login">Kirjaudu sisään</a>
+<font size="+1">|</font> 
+<a href="/register">Luo uusi tunnus</a>
 {% endif %}
 <hr>
 <font size="+1">Hae viestejä:</font><p>
@@ -22,11 +24,17 @@ Hakusana: <input type="text" name="query">
             alert("Hakusana on liian pitkä");
             return false;
         }
+        if (form.query.value.length < 1) {
+            alert("Hakukenttä tyhjä");
+            return false;
+        }
         return true;
     }
     </script>
-
-<a href="/favorites">Mene suosikkeihisi</a>
+<a href="/polls">Mene kyseleyihin</a>
+{% if session.user_id %}
+ | <a href="/favorites">Mene suosikkeihisi</a>
+{% endif %}
 <hr>
 {% for message in messages %}
 {% if message[8] == True and admin == False%}
@@ -57,7 +65,7 @@ Hakusana: <input type="text" name="query">
     <p>
     <i>Lähettäjä:</i> {{ message[4] }}
     <p>
-    <i>Aika:</i> {{ message[5].strftime("%H:%M %d-%m-%Y") }}
+    <i>Luotu:</i> {{ message[5].strftime("%H:%M %d-%m-%Y") }}
     {% if message[7] == True %}
     (Muokattu)
     {% endif %}

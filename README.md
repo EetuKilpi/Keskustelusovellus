@@ -13,8 +13,10 @@ Sovelluksen ominaisuuksia:
   - Käyttäjä voi muokata luomansa ketjun otsikkoa sekä lähettämänsä viestin sisältöä. Käyttäjä voi myös poistaa ketjun tai viestin.
   - Käyttäjä voi etsiä kaikki viestit, joiden osana on annettu sana.
   - Käyttäjä voi lisätä/poistaa viestä suosikkeihinsa ja nähdä nämä viestit erillisellä sivulla.
-  - Ylläpitäjä voi lisätä ja poistaa keskustelualueita.
-  - Ylläpitäjä voi luoda salaisen alueen, johon vain ylläpitäjillä on pääsy.
+  - Käyttäjä voi myös luoda keselyitä erillisella alueella, johon muut käyttäjät voivat vastata.
+  - Käyttäjä voi myös poistaa omia kyselyitään. 
+  - Ylläpitäjä voi lisätä ja poistaa keskustelualueita ja kyselyitä.
+  - Ylläpitäjä voi luoda salaisen viestialueen, johon vain ylläpitäjillä on pääsy.
 
 
 ## Käynnistys ohjeet

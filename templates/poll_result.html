@@ -1,0 +1,12 @@
+{{ topic }}
+<hr>
+<ul>
+{% for choice in choices %}
+    <li>{{ choice.choice }}: {{ choice.count }} kpl</li>
+{% endfor %}
+</ul>
+<hr>
+{% if last_answer != None %}
+<p>Viimeisin vastaus: {{ last_answer.strftime("%H:%M %d-%m-%Y") }} </p>
+{% endif %}
+<a href="/polls">Takaisin</a>

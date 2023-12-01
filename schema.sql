@@ -30,3 +30,22 @@ CREATE TABLE favorites (
     message_id INTEGER UNIQUE REFERENCES messages ON DELETE CASCADE,
     user_id INTEGER REFERENCES users
 );
+
+CREATE TABLE polls (
+    id SERIAL PRIMARY KEY,
+    topic TEXT,
+    user_id INTEGER REFERENCES users,
+    created_at TIMESTAMP
+);
+
+CREATE TABLE choices (
+    id SERIAL PRIMARY KEY,
+    poll_id INTEGER REFERENCES polls ON DELETE CASCADE,
+    choice TEXT
+);
+
+CREATE TABLE poll_answers (
+    id SERIAL PRIMARY KEY,
+    choice_id INTEGER REFERENCES choices ON DELETE CASCADE,
+    sent_at TIMESTAMP
+);

@@ -1,0 +1,36 @@
+{% if session.user_id %}
+<font size="+1">Olet kirjautunut sisään käyttäjällä {{ session.username }} </font>
+<a href="/new_poll">Luo uusi kysely</a> 
+<font size="+1">|</font> 
+<a href="/logout">Kirjaudu ulos</a>
+<font size="+1">|</font> 
+<a href="/">Takaisin</a>
+{% else %}
+<a href="/login">Kirjaudu sisään</a>
+<font size="+1">|</font> 
+<a href="/register">Luo uusi tunnus</a>
+<font size="+1">|</font> 
+<a href="/">Takaisin</a>
+{% endif %}
+<hr>
+{% for poll in polls %}
+    <p>
+    <i>Aihe:</i> {{ poll[1] }}
+    <p>
+    <i>Tekijä:</i> {{ poll[3] }}
+    <p>
+    <i>Luotu:</i> {{ poll[4].strftime("%H:%M %d-%m-%Y") }}
+    <p>
+    <a href="/poll/{{ poll[0] }}">Mene kyselyyn</a> |
+    <a href="/poll_result/{{ poll[0] }}">Näytä tulokset</a> <br>
+    {% if poll[2] == session.user_id or admin == True %}
+        <p>
+        <form action="/delete_poll" method="POST">
+            <input type="hidden" name="user_id" value="{{ poll[2] }}">
+            <input type="hidden" name="poll_id" value="{{ poll[0] }}">
+            <input type="submit" value="Poista kysely">
+        </form>    
+        {% endif %}
+    <hr>
+{% endfor %}
+

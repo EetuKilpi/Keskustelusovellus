@@ -7,6 +7,7 @@ import messages, users
 def index():
     message = messages.get_list()
     user_id = users.user_id()
+    favorite = []
     if user_id != 0:
         favorite = messages.get_favorite_message_ids(user_id)
         print(favorite)
@@ -190,3 +191,63 @@ def remove_favorite():
         return redirect(source)
     else:
         return render_template("error.html", message="Suosikin poistaminen epäonnistui", url="favorites")
+
+@app.route("/polls")
+def polls():
+    polls = messages.get_polls()
+    return render_template("polls.html", polls=polls)
+
+@app.route("/new_poll")
+def new_poll():
+    return render_template("new_poll.html")
+
+@app.route("/create", methods=["POST"])
+def create():
+    topic = request.form["topic"]
+    poll_id = messages.create_poll(topic)
+    choices = request.form.getlist("choice")
+    if poll_id != False:
+        if messages.create_choices(poll_id, choices):
+            return redirect("/polls")
+        else:
+            return render_template("error.html", message="Kyselyn luominen epäonnistui", url="polls")
+    else:
+        return render_template("error.html", message="Kyselyn luominen epäonnistui", url="polls")
+
+@app.route("/poll/<int:id>")
+def poll(id):
+    topic = messages.get_poll_topic(id)
+    choices = messages.get_poll_choices(id)
+    return render_template("poll.html", id=id, topic=topic, choices=choices)
+
+@app.route("/poll_answer", methods=["POST"])
+def poll_answer():
+    poll_id = request.form["id"]
+    if "poll_answer" in request.form:
+        choice_id = request.form["poll_answer"]
+        if messages.poll_answer(choice_id):
+            return redirect("/poll_result/" + str(poll_id))
+        else:
+            return render_template("error.html", message="Kyselyn luominen epäonnistui", url="polls")
+
+@app.route("/poll_result/<int:id>")
+def poll_result(id):
+    topic = messages.get_poll_topic(id)
+    choices = messages.get_poll_results(id)
+    last_answer = messages.get_last_poll_answer(id)
+    return render_template("poll_result.html", topic=topic, choices=choices, last_answer=last_answer)
+
+@app.route("/delete_poll", methods=["POST"])
+def delete_poll():
+    allow = False
+    user_id = request.form["user_id"]
+    poll_id = request.form["poll_id"]
+    if users.is_admin():
+        allow = True
+    if messages.allow_user(user_id, poll_id, 2):
+        allow = True
+    if allow == True:
+        messages.delete_poll(poll_id)
+        return redirect("/polls")
+    else:
+        return render_template("error.html", message="Sinulla ei ole oikeuksia tähän", url="polls")

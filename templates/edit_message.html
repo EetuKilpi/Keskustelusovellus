@@ -19,6 +19,14 @@
             alert("Viesti on liian pitkä");
             return false;
         }
+        if (form.new_topic.value.length < 1) {
+            alert("Otsikko on liian lyhyt");
+            return false;
+        }
+        if (form.new_text.value.length < 1) {
+            alert("Viesti on liian lyhyt");
+            return false;
+        }
         return true;
     }
     </script>

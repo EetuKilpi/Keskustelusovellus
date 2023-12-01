@@ -67,16 +67,19 @@ def delete_message(message_id):
     db.session.commit()
     return True
 
-def allow_user(user_id, id, message_or_answer):
+def allow_user(user_id, id, message_or_answer_or_poll):
     user_id = users.user_id()
     if user_id == 0:
         return False
-    if message_or_answer == 0:
+    if message_or_answer_or_poll == 0:
         sql = text("SELECT user_id FROM messages WHERE id = :message_id")
         result = db.session.execute(sql, {"message_id": id})
-    elif message_or_answer == 1:
+    elif message_or_answer_or_poll == 1:
         sql = text("SELECT user_id FROM answers WHERE id = :answer_id")
         result = db.session.execute(sql, {"answer_id": id})
+    elif message_or_answer_or_poll == 2:
+        sql = text("SELECT user_id FROM polls WHERE id = :poll_id")
+        result = db.session.execute(sql, {"poll_id": id})
     allowed_user_id = result.scalar()
     if allowed_user_id == user_id:
         return True
@@ -140,3 +143,63 @@ def remove_favorite(message_id, user_id):
     db.session.commit()
     return True
 
+
+def get_polls():
+    sql = text("SELECT P.id, P.topic, P.user_id, U.username, P.created_at "
+               "FROM polls P "
+               "JOIN users U ON P.user_id = U.id "
+               "GROUP BY P.id, U.username ORDER BY P.id")
+    result = db.session.execute(sql)
+    return result.fetchall()
+
+def create_poll(topic):
+    user_id = users.user_id()
+    if user_id == 0:
+        return False
+    if topic != "":
+        sql = text("INSERT INTO polls (topic, user_id, created_at) VALUES (:topic, :user_id, NOW()) RETURNING id")
+        result = db.session.execute(sql, {"topic":topic, "user_id":user_id})
+        return result.fetchone()[0]
+    else:
+        return False
+    
+def create_choices(poll_id, choices):
+    for choice in choices:
+        if choice != "":
+            sql = text("INSERT INTO choices (poll_id, choice) VALUES (:poll_id, :choice)")
+            db.session.execute(sql, {"poll_id":poll_id, "choice":choice})
+    db.session.commit()
+    return True
+
+def get_poll_topic(id):
+    sql = text("SELECT topic FROM polls WHERE id=:id")
+    result = db.session.execute(sql, {"id":id})
+    return result.fetchone()[0]
+
+def get_poll_choices(id):
+    sql = text("SELECT id, choice FROM choices WHERE poll_id=:id")
+    result = db.session.execute(sql, {"id":id})
+    return result.fetchall()
+
+def poll_answer(choice_id):
+    sql = text("INSERT INTO poll_answers (choice_id, sent_at) VALUES (:choice_id, NOW())")
+    db.session.execute(sql, {"choice_id":choice_id})
+    db.session.commit()
+    return True
+
+def get_poll_results(id):
+    sql = text("SELECT c.choice, COUNT(a.id) FROM choices c LEFT JOIN poll_answers a "
+               "ON c.id=a.choice_id WHERE c.poll_id=:poll_id GROUP BY c.id")
+    result = db.session.execute(sql, {"poll_id":id})
+    return result.fetchall()
+
+def get_last_poll_answer(poll_id):
+    sql = text("SELECT MAX(sent_at) FROM poll_answers WHERE choice_id IN (SELECT id FROM choices WHERE poll_id=:poll_id)")
+    result = db.session.execute(sql, {"poll_id": poll_id})
+    return result.scalar()
+
+def delete_poll(poll_id):
+    sql_delete = text("DELETE FROM polls WHERE id = :poll_id")
+    db.session.execute(sql_delete, {"poll_id": poll_id})
+    db.session.commit()
+    return True

@@ -1,0 +1,38 @@
+<a href="/">Takaisin</a>
+<hr>
+{% if session.user_id %}
+<form action="/create" method="POST">
+    <p>Aihe:<br>
+    <input type="text" name="topic"></p>
+    <p>Vaihtoehto 1:<br>
+    <input type="text" name="choice"></p>
+    <p>Vaihtoehto 2:<br>
+    <input type="text" name="choice"></p>
+    <p>Vaihtoehto 3:<br>
+    <input type="text" name="choice"></p>
+    <p>Vaihtoehto 4:<br>
+    <input type="text" name="choice"></p>
+    <input type="submit" value="Luo kysely">
+    </form>
+
+    <script>
+        function check(form) {
+            if (form.topic.value.length > 100) {
+                alert("Aihe on liian pitkä");
+                return false;
+            }
+            if (form.text.choice.length > 100) {
+                alert("Vaihtoehto on liian pitkä");
+                return false;
+            }
+            if (form.topic.value.length < 1) {
+                alert("Aihe on liian lyhyt");
+                return false;
+            }
+            return true;
+        }
+        </script>
+
+{% else %}
+Kirjaudu sisään <a href="/login">tästä</a>
+{% endif %}

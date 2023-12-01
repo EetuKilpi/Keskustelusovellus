@@ -13,6 +13,10 @@
             alert("Viesti on liian pitkä");
             return false;
         }
+        if (form.new_text.value.length < 1) {
+            alert("Viesti on liian lythyt");
+            return false;
+        }
         return true;
     }
     </script>
