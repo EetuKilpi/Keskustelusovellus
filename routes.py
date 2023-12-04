@@ -12,6 +12,8 @@ def index():
         favorite = messages.get_favorite_message_ids(user_id)
         print(favorite)
     admin = users.is_admin()
+    if admin == None:
+        admin = False
     return render_template("index.html", messages=message, favorites=favorite, admin=admin)
 
 @app.route("/new")
