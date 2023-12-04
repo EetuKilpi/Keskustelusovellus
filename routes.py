@@ -10,7 +10,6 @@ def index():
     favorite = []
     if user_id != 0:
         favorite = messages.get_favorite_message_ids(user_id)
-        print(favorite)
     admin = users.is_admin()
     if admin == None:
         admin = False

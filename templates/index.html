@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/main.css">
-    <title>Keskustelu sovellus</title>
-</head>
+<link rel="stylesheet" href="/assets/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keskustelu sovellus</title>
 <body>
+
     {% if session.user_id %}
             Olet kirjautunut sisään käyttäjällä {{ session.username }}
             <a href="/new">Luo uusi viesti</a>
