@@ -1,0 +1,76 @@
+body {
+    margin: auto;
+    max-width: 45em;
+    font-size: 18px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    background-color: grey;
+}
+
+.container {
+    background-color: lightgray;
+    padding: 0.5px 25px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+header {
+    background-color: lightgray;
+    padding: 0.5px 25px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+nav li {
+    display: inline-block;
+    padding: .5em 1em;
+    background: white;
+    border-radius: .5em;
+    margin-right: .2em;
+}
+
+nav ul {
+    padding: 0;
+    margin: 1;
+}
+
+nav li a {
+    text-decoration: none;
+    color: black;
+}
+
+nav li:hover {
+    background-color: grey;
+}
+
+
+.search {
+    margin-top: 10px;
+    background: gray;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.search:before {
+    content: "Hae viestejä:";
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.search input[name="query"] {
+    padding: 5px;
+    width: 200px;
+}
+
+.search input[type="submit"] {
+    padding: 5px 10px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.search input[type="submit"]:hover {
+    background-color: grey;
+}

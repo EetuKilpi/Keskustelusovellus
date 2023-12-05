@@ -87,6 +87,8 @@ def answer():
 def result():
     query = request.args["query"]
     admin = users.is_admin()
+    if admin == None:
+        admin = False
     counter = 0
     if query != "":
         message = messages.search(query)

@@ -1,24 +1,27 @@
-<!DOCTYPE html>
-<link rel="stylesheet" href="/assets/main.css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keskustelu sovellus</title>
-<body>
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+        {% if session.user_id %}
+        <p>Olet kirjautunut sisään käyttäjällä {{ session.username }}</p>
+        <nav>
+            <ul>
+                <li><a href="/new">Luo uusi viesti</a></li>
+                {% if admin == True %}
+                <li><a href="/new_private">Luo uusi yksityinen viesti</a></li>
+                {% endif %}
+                <li><a href="/logout">Kirjaudu ulos</a></li>
+            </ul>
+        </nav>
+        {% else %}
+        <nav>
+            <ul>
+                <li><a href="/login">Kirjaudu sisään</a></li>
+                <li><a href="/register">Luo uusi tunnus</a></li>
+                {% endif %}
+            </ul>
+        </nav>
 
-    {% if session.user_id %}
-            Olet kirjautunut sisään käyttäjällä {{ session.username }}
-            <a href="/new">Luo uusi viesti</a>
-            {% if admin == True %}
-                | <a href="/new_private">Luo uusi yksityinen viesti</a>
-            {% endif %}
-                | <a href="/logout">Kirjaudu ulos</a>
-    {% else %}
-            <a href="/login">Kirjaudu sisään</a>
-            | <a href="/register">Luo uusi tunnus</a>
-    {% endif %}
-    <hr>
-
-    Hae viestejä:
-    <form action="/result" method="GET" onsubmit="return check(this)">
+    <form class="search" action="/result" method="GET" onsubmit="return check(this)">
     Hakusana: <input type="text" name="query">
     <input type="submit" value="Hae">
     </form>
@@ -36,11 +39,17 @@
             return true;
         }
         </script>
-    <a href="/polls">Mene kyseleyihin</a>
-    {% if session.user_id %}
-    | <a href="/favorites">Mene suosikkeihisi</a>
-    {% endif %}
-    <hr>
+    <nav>
+        <ul>
+            <li><a href="/polls">Mene kyseleyihin</a></li>
+            {% if session.user_id %}
+            <li><a href="/favorites">Mene suosikkeihisi</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+<div class="container">
+    <p>
     {% for message in messages %}
     {% if message[8] == True and admin == False%}
     {% else %}
@@ -95,4 +104,5 @@
     {% endif %}
     {% endfor %}
 
-</body>
+</div>
+{% endblock %}
