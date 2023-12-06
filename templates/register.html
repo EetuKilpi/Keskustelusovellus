@@ -1,12 +1,24 @@
-<form action="/register" method="post" onsubmit="return check(this)">
-Tunnus: <input type="text" name="username">
-<p>
-Salasana: <input type="password" name="password1">
-<p>
-Salasana uudestaan: <input type="password" name="password2">
-<p>
-<input type="submit" value="Luo tunnus">
-</form>
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/">Takaisin</a>
+    </div>
+</header>
+
+<div class="container">
+    <p>
+        <div class="account">
+            <form action="/register" method="post" onsubmit="return check(this)">
+            Tunnus: <input type="text" name="username">
+            <p>
+            Salasana: <input type="password" name="password1">
+            <p>
+            Salasana uudestaan: <input type="password" name="password2">
+            <p>
+            <input type="submit" value="Luo tunnus">
+            </form>
 
 <script>
     function check(form) {
@@ -25,5 +37,8 @@ Salasana uudestaan: <input type="password" name="password2">
         return true;
     }
     </script>
-
-<a href="/">Takaisin</a>
+        
+        </div>
+    </p>
+</div>
+{% endblock %}

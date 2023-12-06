@@ -1,5 +1,16 @@
-<form action="/edit_answer/{{ answer.id }}" method="POST" onsubmit="return check(this)">
-    <font size="+1">Muuta vastausta: | <a href="/message/{{ answer.message_id }}">Takaisin</a></font> <br>
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/message/{{ answer.message_id }}">Takaisin</a>
+    </div>
+</header>
+
+<div class="container">
+<p>
+<form id="answer" action="/edit_answer/{{ answer.id }}" method="POST" onsubmit="return check(this)">
+    <p>Muuta vastausta: <br>
         <textarea name="new_text" rows="5" cols="40">{{ answer.answer }}</textarea>
         <input type="hidden" name="message_id" value="{{ answer.message_id }}">
         <br>
@@ -20,3 +31,5 @@
         return true;
     }
     </script>
+</div>
+{% endblock %}

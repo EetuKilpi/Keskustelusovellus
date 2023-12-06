@@ -1,8 +1,19 @@
-<form action="/edit_message/{{ message.id }}" method="POST" onsubmit="return check(this)">
-    <font size="+1">Muuta aihetta: | <a href="/">Takaisin</a></font> <br>
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/">Takaisin</a>
+    </div>
+</header>
+
+<div class="container">
+<p>
+<form id="answer" action="/edit_message/{{ message.id }}" method="POST" onsubmit="return check(this)">
+    <p>Muuta aihetta: <br>
     <textarea name="new_topic" rows="3" cols="40">{{ message.topic }}</textarea>
     <br>
-    Muuta viestiä: <br>
+    <p>Muuta viestiä: <br>
     <textarea name="new_text" rows="5" cols="40">{{ message.text }}</textarea>
     <br>
     <input type="submit" value="Tallenna muutokset">
@@ -30,3 +41,5 @@
         return true;
     }
     </script>
+</div>
+{% endblock %}

@@ -1,8 +1,27 @@
-<form action="/login" method="post">
-    Tunnus: <input type="text" name="username">
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/">Takaisin</a>
+    </div>
+</header>
+
+<div class="container">
     <p>
-    Salasana: <input type="password" name="password">
-    <p>
-    <input type="submit" value="Kirjaudu">
-    </form>
-    Luo uusi tunnus <a href="/register">tästä</a> | <a href="/">Takaisin</a>
+        <div class="account">
+            <form action="/login" method="post">
+                Tunnus: <input type="text" name="username">
+                <p>
+                Salasana: <input type="password" name="password">
+                <p>
+                <input type="submit" value="Kirjaudu">
+            <hr>
+            </form>
+            <form action="/register" method="get">
+                <input type="submit" value="Luo uusi tunnus">
+            </form>
+        </div>
+    </p>
+</div>
+{% endblock %}

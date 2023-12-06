@@ -20,12 +20,35 @@ header {
     margin-bottom: 10px;
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header a {
+    display: inline-block;
+    padding: 5px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    text-decoration: none;
+    color: black;
+    margin-bottom: 0;
+}
+
+header a:hover {
+    background-color: grey;
+}
+
+
 nav li {
     display: inline-block;
-    padding: .5em 1em;
+    
     background: white;
     border-radius: .5em;
     margin-right: .2em;
+    border: 1px solid black;
 }
 
 nav ul {
@@ -34,8 +57,10 @@ nav ul {
 }
 
 nav li a {
+    display: block;
     text-decoration: none;
     color: black;
+    padding: 10px;
 }
 
 nav li:hover {
@@ -45,19 +70,19 @@ nav li:hover {
 
 .search {
     margin-top: 10px;
-    background: gray;
+    background: rgb(161, 161, 161);
     padding: 15px;
     border-radius: 10px;
 }
 
 .search:before {
-    content: "Hae viestejä:";
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 .search input[name="query"] {
+    border: 1px solid black;
     padding: 5px;
     width: 200px;
 }
@@ -65,8 +90,8 @@ nav li:hover {
 .search input[type="submit"] {
     padding: 5px 10px;
     background-color: white;
-    color: black;
-    border: none;
+    color: black;   
+    border: 1px solid black;
     border-radius: 3px;
     cursor: pointer;
 }
@@ -74,3 +99,136 @@ nav li:hover {
 .search input[type="submit"]:hover {
     background-color: grey;
 }
+
+.message {
+    padding: 15px;
+    border-radius: 10px;
+    margin: 5px;
+    background-color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.message b{
+    font-size: larger;
+}
+
+.message a {
+    padding: 5px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    text-decoration: none;
+    color: black;
+    margin-bottom: 0;
+}
+
+.message a:hover {
+    background-color: grey;
+}
+
+.message form {
+    display: inline-block;
+}
+
+.message form #button {
+    display: inline-block;
+    background-color: black;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.message form #favorite {
+    display: inline-block;
+    background-color: black;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+
+.message form #button:hover {
+    background-color: grey;
+}
+
+.message form #favorite:hover {
+    background-color: grey;
+}
+
+
+.content {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0px;
+    font-family: Arial, sans-serif;
+}
+
+.content i {
+    font-style: italic;
+    color: #555;
+}
+
+.content p {
+    margin: 10px 0;
+    margin-bottom: 0;
+}
+
+#answer {
+    padding: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+    margin: 20px 0;
+    background-color: #ffffff;
+    margin-top: 0;
+}
+
+#answer textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#answer input[type="submit"] {
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#answer input[type="submit"]:hover {
+    background-color: grey;
+}
+
+.account input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 5px solid #ccc;
+    border-radius: 4px;
+}
+
+.account input[type="submit"] {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.account input[type="submit"]:hover {
+    background-color: grey;
+}
+
+
+

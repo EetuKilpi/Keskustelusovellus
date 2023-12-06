@@ -1,72 +1,96 @@
-{% if message[7] == True and admin == False %}
-Sinulla ei ole oikeuksia nähdä tätä keskustelua | <a href="/">Takaisin</a>
-{% else %}
-    <font size="+2">Aihe: {{ message[1] }} | </font><a href="/">Takaisin</a>
-    <hr>
-    <i>Lähettäjä:</i> {{ message[4] }}
-    <p><i>Viesti:</i> {{ message[2] }}</p>
-    <i>Aika:</i> {{ message[5].strftime("%H:%M %d-%m-%Y") }}
-    {% if message[6] == True %}
-    (Muokattu)
-    {% endif %}
-    {% if message[3] == session.user_id %}
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/">Takaisin</a>
+    </div>
+</header>
+
+<div class="container">
     <p>
-    <form action="/edit_message/{{ message[0] }}?user_id={{ message[3] }}" method="GET">
-        <input type="hidden" name="message_id" value="{{ message[0] }}">
-        <input type="submit" value="Muokkaa viestiä">
-    </form> 
-    <form action="/delete_message" method="POST">
-        <input type="hidden" name="message_id" value="{{ message[0] }}">
-        <input type="submit" value="Poista viesti">
-    </form>    
-    {% endif %}
-    <hr>
-    <font size="+1">Vastaukset:</font>
-    <hr>
-    {% for answer in answers %}
-        <i>Lähettäjä:</i> {{ answer[3] }}
-        <p><i>Viesti:</i> {{ answer[1] }}</p>
-        <i>Aika:</i> {{ answer[4].strftime("%H:%M %d-%m-%Y") }}
-        {% if answer[5] == True %}
+    <div class="message">
+    {% if message[7] == True and admin == False %}
+    <b>Error</b><br>
+    Sinulla ei ole oikeuksia nähdä tätä keskustelua
+    {% else %}
+        <b>Aihe: {{ message[1] }}</b>
+        <div class="content">
+        <i>Lähettäjä:</i> {{ message[4] }}
+        <p>
+        <i>Viesti:</i> {{ message[2] }}
+        <p>
+        <i>Lähetetty:</i> {{ message[5].strftime("%H:%M %d-%m-%Y") }}
+        {% if message[6] == True %}
         (Muokattu)
         {% endif %}
+        </div>
 
-        {% if answer[2] == session.user_id %}
-        <p>
-        <form action="/edit_answer/{{ answer[0] }}?message_id={{ message[0] }}&user_id={{ answer[2] }}" method="GET">
+        {% if message[3] == session.user_id %}
+        <form action="/edit_message/{{ message[0] }}?user_id={{ message[3] }}" method="GET">
             <input type="hidden" name="message_id" value="{{ message[0] }}">
-            <input type="submit" value="Muokkaa vastausta">
-        </form>
+            <input id="button" type="submit" value="Muokkaa viestiä">
+        </form> 
         {% endif %}
-        {% if answer[2] == session.user_id or admin == True %}
-        <p>
-        <form action="/delete_answer" method="POST">
-            <input type="hidden" name="user_id" value="{{ answer[2] }}">
-            <input type="hidden" name="answer_id" value="{{ answer[0] }}">
+        {% if message[3] == session.user_id or admin == True %}
+        <form action="/delete_message" method="POST">
             <input type="hidden" name="message_id" value="{{ message[0] }}">
-            <input type="submit" value="Poista vastaus">
-        </form>
+            <input id="button" type="submit" value="Poista viesti">
+        </form>    
         {% endif %}
-        <hr>
-    {% endfor %}
+    </div>
+    </p>
+        <b>Vastaukset:</b>
+        <hr><p>
+        {% for answer in answers %}
+        <div class="message">
+            <div class="content">
+            <i>Lähettäjä:</i> {{ answer[3] }}
+            <p>
+            <i>Viesti:</i> {{ answer[1] }}
+            <p>
+            <i>Lähetetty:</i> {{ answer[4].strftime("%H:%M %d-%m-%Y") }}
+            {% if answer[5] == True %}
+            (Muokattu)
+            {% endif %}
+            </div>
 
-    {% if session.user_id %}
-        <form action="/answer" method="POST" onsubmit="return check(this)">
-            <p>Uusi vastaus: <br>
-                <textarea name="text" rows="5" cols="40"></textarea>
-                <br>
-                <input type="submit" value="Lähetä">
-                <input type="hidden" name="id" value="{{ message[0] }}">
-        </form>
+            {% if answer[2] == session.user_id %}
+            <form action="/edit_answer/{{ answer[0] }}?message_id={{ message[0] }}&user_id={{ answer[2] }}" method="GET">
+                <input type="hidden" name="message_id" value="{{ message[0] }}">
+                <input id="button" type="submit" value="Muokkaa vastausta">
+            </form>
+            {% endif %}
+            {% if answer[2] == session.user_id or admin == True %}
+            <form action="/delete_answer" method="POST">
+                <input type="hidden" name="user_id" value="{{ answer[2] }}">
+                <input type="hidden" name="answer_id" value="{{ answer[0] }}">
+                <input type="hidden" name="message_id" value="{{ message[0] }}">
+                <input id="button" type="submit" value="Poista vastaus">
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
 
-        <script>
-            function check(form) {
-                if (form.text.value.length > 5000) {
-                    alert("Viesti on liian pitkä");
-                    return false;
+        {% if session.user_id %}
+            <form id="answer" action="/answer" method="POST" onsubmit="return check(this)">
+                <p>Uusi vastaus: <br>
+                    <textarea name="text" rows="5" cols="40"></textarea>
+                    <br>
+                    <input type="submit" value="Lähetä">
+                    <input type="hidden" name="id" value="{{ message[0] }}">
+            </form>
+
+            <script>
+                function check(form) {
+                    if (form.text.value.length > 5000) {
+                        alert("Viesti on liian pitkä");
+                        return false;
+                    }
+                    return true;
                 }
-                return true;
-            }
-            </script>
+                </script>
+        {% endif %}
     {% endif %}
-{% endif %}
+</div>
+{% endblock %}

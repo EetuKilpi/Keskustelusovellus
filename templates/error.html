@@ -1,1 +1,17 @@
-Virhe: {{ message }} <a href="/{{url}}"> Takaisin </a>
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/{{url}}"> Takaisin </a>
+    </div>
+</header>
+
+<div class="container">
+    <p>
+    <div class="message">
+    <b>Error</b><br>
+    Virhe: {{ message }}
+    </div>
+</div>
+{% endblock %}

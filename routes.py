@@ -13,6 +13,14 @@ def index():
     admin = users.is_admin()
     if admin == None:
         admin = False
+    all_messages_private = True
+    for i in message:
+        if i[-1] == False:
+            all_messages_private = False
+    if message == []:
+        message = None
+    if all_messages_private == True and admin != True:
+        message = None
     return render_template("index.html", messages=message, favorites=favorite, admin=admin)
 
 @app.route("/new")
@@ -179,8 +187,19 @@ def favorite_message():
 @app.route("/favorites")
 def favorites():
     user_id = users.user_id()
+    admin = users.is_admin()
+    if admin == None:
+        admin = False
     if user_id != 0:
         favorite_messages = messages.get_favorite_messages(user_id)
+        all_messages_private = True
+        for i in favorite_messages:
+            if i[-1] == False:
+                all_messages_private = False
+        if favorite_messages == []:
+            favorite_messages = None
+        if all_messages_private == True and admin != True:
+            favorite_messages = None
         return render_template("favorites.html", messages=favorite_messages)
     else:
         return render_template("error.html", message="Kirjaudu ensin sisään nähdäksesi suosikkiviestisi", url="login")

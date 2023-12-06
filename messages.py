@@ -7,7 +7,7 @@ def get_list():
                "FROM messages M "
                "JOIN users U ON M.user_id = U.id "
                "LEFT JOIN answers A ON M.id = A.message_id "
-               "GROUP BY M.id, U.username ORDER BY M.id")
+               "GROUP BY M.id, U.username ORDER BY M.id DESC")
     result = db.session.execute(sql)
     return result.fetchall()
 
