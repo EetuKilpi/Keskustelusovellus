@@ -3,18 +3,18 @@ body {
     max-width: 45em;
     font-size: 18px;
     font-family: 'Helvetica', 'Arial', sans-serif;
-    background-color: grey;
+    background: linear-gradient(0.25turn, #3f87a6, #e1f8f5, #3f87a6);
 }
 
 .container {
-    background-color: lightgray;
+    background-color: #679dc9;
     padding: 0.5px 25px;
     border-radius: 10px;
     margin-bottom: 10px;
 }
 
 header {
-    background-color: lightgray;
+    background-color: #679dc9;
     padding: 0.5px 25px;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -38,7 +38,7 @@ header a {
 }
 
 header a:hover {
-    background-color: grey;
+    background-color: #78bffa;
 }
 
 
@@ -63,13 +63,13 @@ nav li a {
 }
 
 nav li:hover {
-    background-color: grey;
+    background-color: #78bffa;
 }
 
 
 .search {
     margin-top: 10px;
-    background: rgb(161, 161, 161);
+    background: #9dcdf5;
     padding: 15px;
     border-radius: 10px;
 }
@@ -96,7 +96,7 @@ nav li:hover {
 }
 
 .search input[type="submit"]:hover {
-    background-color: grey;
+    background-color: #78bffa;
 }
 
 .message {
@@ -122,7 +122,7 @@ nav li:hover {
 }
 
 .message a:hover {
-    background-color: grey;
+    background-color: #78bffa;
 }
 
 .message form {
@@ -131,7 +131,7 @@ nav li:hover {
 
 .message form #button {
     display: inline-block;
-    background-color: black;
+    background-color: #33a3ff;
     color: #fff;
     padding: 5px 10px;
     border: none;
@@ -142,7 +142,7 @@ nav li:hover {
 
 .message form #favorite {
     display: inline-block;
-    background-color: black;
+    background-color: #33a3ff;
     color: #fff;
     padding: 5px 10px;
     border: none;
@@ -153,11 +153,11 @@ nav li:hover {
 
 
 .message form #button:hover {
-    background-color: grey;
+    background-color: #78bffa;
 }
 
 .message form #favorite:hover {
-    background-color: grey;
+    background-color: #78bffa;
 }
 
 .content {
@@ -212,7 +212,7 @@ nav li:hover {
 }
 
 #post input[type="submit"]:hover {
-    background-color: grey;
+    background-color: #78bffa;
 }
 
 .account input {
@@ -234,7 +234,7 @@ nav li:hover {
 }
 
 .account input[type="submit"]:hover {
-    background-color: grey;
+    background-color: #78bffa;
 }
 
 .poll {
@@ -262,7 +262,7 @@ nav li:hover {
 }
 
 .poll form input[type="submit"]:hover {
-    background-color: grey;
+    background-color: #78bffa;
 }
 
 
