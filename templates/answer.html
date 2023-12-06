@@ -2,7 +2,7 @@
 {% block content %}
 <header>
     <div class="header-content">
-        <h1>Keskustelu sovellus</h1>
+        <h1>Keskustelusovellus</h1>
         <a href="/">Takaisin</a>
     </div>
 </header>
@@ -34,6 +34,7 @@
         {% endif %}
         {% if message[3] == session.user_id or admin == True %}
         <form action="/delete_message" method="POST">
+            <input type="hidden" name="user_id" value="{{ message[3] }}">
             <input type="hidden" name="message_id" value="{{ message[0] }}">
             <input id="button" type="submit" value="Poista viesti">
         </form>    
