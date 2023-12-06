@@ -1,7 +1,16 @@
-<a href="/">Takaisin</a>
-<hr>
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/polls">Takaisin</a>
+    </div>
+</header>
+
+<div class="container">
+<p>
 {% if session.user_id %}
-<form action="/create" method="POST">
+<form id="post" action="/create" method="POST">
     <p>Aihe:<br>
     <input type="text" name="topic"></p>
     <p>Vaihtoehto 1:<br>
@@ -12,7 +21,8 @@
     <input type="text" name="choice"></p>
     <p>Vaihtoehto 4:<br>
     <input type="text" name="choice"></p>
-    <input type="submit" value="Luo kysely">
+    <input type="submit" value="Luo uusi kysely">
+    </p>
     </form>
 
     <script>
@@ -34,5 +44,9 @@
         </script>
 
 {% else %}
-Kirjaudu sisään <a href="/login">tästä</a>
+    <div class="message">
+    Kirjaudu sisään ensiksi <a href="/login">tästä</a>
+    </div>
 {% endif %}
+</div>
+{% endblock %}

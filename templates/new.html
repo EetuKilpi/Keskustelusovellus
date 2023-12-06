@@ -1,16 +1,26 @@
-<a href="/">Takaisin</a>
-<hr>
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/">Takaisin</a>
+    </div>
+</header>
+
+<div class="container">
+<p>
 {% if session.user_id %}
-<form action="/send" method="post" onsubmit="return check(this)">
+<form id="post" action="/send" method="post" onsubmit="return check(this)">
     <input type="hidden" name="privacy" value=False>
-    Aihe: <br>
+    <p>Aihe: <br>
     <textarea name="topic" rows="3" cols="40"></textarea>
     <br>
-    Viesti: <br>
+    <p>Viesti: <br>
     <textarea name="text" rows="5" cols="40"></textarea>
     <br>
     <input type="submit" value="Lähetä">
-    </form>
+    </p>
+</form>
 
     <script>
         function check(form) {
@@ -35,6 +45,10 @@
         </script>
 
 {% else %}
-Kirjaudu sisään <a href="/login">tästä</a>
+    <div class="message"></div>
+    Kirjaudu sisään ensiksi <a href="/login">tästä</a>
+    </div>
 {% endif %}
+</div>
+{% endblock %}
     

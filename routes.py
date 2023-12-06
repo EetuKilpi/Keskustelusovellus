@@ -94,16 +94,20 @@ def answer():
 @app.route("/result")
 def result():
     query = request.args["query"]
+    user_id = users.user_id()
     admin = users.is_admin()
     if admin == None:
         admin = False
+    favorite = []
+    if user_id != 0:
+        favorite = messages.get_favorite_message_ids(user_id)
     counter = 0
     if query != "":
         message = messages.search(query)
         for i in message:
             if i[8] == True:
                 counter += 1
-    return render_template("result.html", messages=message ,query=query, admin=admin, counter=counter)
+    return render_template("result.html", messages=message ,query=query, admin=admin, counter=counter, favorites=favorite)
 
 @app.route("/delete_answer", methods=["POST"])
 def delete_answer():
@@ -179,8 +183,9 @@ def edit_message(message_id):
 def favorite_message():
     user_id = request.form["user_id"]
     message_id = request.form["message_id"]
+    source = request.form["source"]
     if messages.add_favorite(message_id, user_id):
-        return redirect("/")
+        return redirect(source)
     else:
         return render_template("error.html", message="Viestin lisääminen epäonnistui", url="")
 
@@ -216,8 +221,10 @@ def remove_favorite():
 
 @app.route("/polls")
 def polls():
-    polls = messages.get_polls()
-    return render_template("polls.html", polls=polls)
+    poll = messages.get_polls()
+    if poll == []:
+        poll = None
+    return render_template("polls.html", polls=poll)
 
 @app.route("/new_poll")
 def new_poll():

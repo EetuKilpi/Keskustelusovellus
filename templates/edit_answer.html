@@ -9,7 +9,7 @@
 
 <div class="container">
 <p>
-<form id="answer" action="/edit_answer/{{ answer.id }}" method="POST" onsubmit="return check(this)">
+<form id="post" action="/edit_answer/{{ answer.id }}" method="POST" onsubmit="return check(this)">
     <p>Muuta vastausta: <br>
         <textarea name="new_text" rows="5" cols="40">{{ answer.answer }}</textarea>
         <input type="hidden" name="message_id" value="{{ answer.message_id }}">

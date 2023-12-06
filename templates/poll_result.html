@@ -1,12 +1,26 @@
-{{ topic }}
-<hr>
-<ul>
-{% for choice in choices %}
-    <li>{{ choice.choice }}: {{ choice.count }} kpl</li>
-{% endfor %}
-</ul>
-<hr>
-{% if last_answer != None %}
-<p>Viimeisin vastaus: {{ last_answer.strftime("%H:%M %d-%m-%Y") }} </p>
-{% endif %}
-<a href="/polls">Takaisin</a>
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/polls">Takaisin</a>
+    </div>
+</header>
+
+<div class="container">
+<p>
+    <div class="message">
+    <b>Aihe: {{ topic }}</b>
+        <div class="content">
+        <ul>
+        {% for choice in choices %}
+            <li>{{ choice.choice }}: {{ choice.count }} kpl</li>
+        {% endfor %}
+        </ul>
+        </div>
+    {% if last_answer != None %}
+    <p>Viimeisin vastaus: {{ last_answer.strftime("%H:%M %d-%m-%Y") }}
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

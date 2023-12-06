@@ -1,16 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/polls">Takaisin</a>
+    </div>
+</header>
+
+<div class="container">
+<p>
 {% if session.user_id %}
-    {{ topic }}
+    <div class="poll">
+    <b>Aihe: {{ topic }}</b>
     <hr>
-    <form action="/poll_answer" method="POST">
-    {% for choice in choices %}
-    <input type="radio" name="poll_answer" value="{{ choice.id }}"> {{ choice.choice }} <br>
-    {% endfor %}
-    <p>
-    <input type="submit" value="Lähetä">
-    <input type="hidden" name="id" value="{{ id }}">
-    </form>
-    <hr>
-    <a href="/polls">Takaisin</a>
+        <form action="/poll_answer" method="POST">
+        {% for choice in choices %}
+        <input type="radio" name="poll_answer" value="{{ choice.id }}"> {{ choice.choice }} <br>
+        {% endfor %}
+        <p>
+        <input type="submit" value="Lähetä">
+        <input type="hidden" name="id" value="{{ id }}">
+        </form>
+    </div>
+    </p>
 {% else %}
-Kirjaudu sisään <a href="/login">tästä</a> vastataksesi kyselyyn | <a href="/polls">Takaisin</a>
+    <div class="message">
+    Kirjaudu sisään vastataksesi kyselyyn <a href="/login">tästä</a>
+    </div>
 {% endif %}
+</div>
+{% endblock %}

@@ -1,69 +1,102 @@
-<font size="+1">Käytit hakusanaa: {{ query }} </font>
-<font size="+1">|</font> <a href="/">Takaisin</a>
+{% extends "layout.html" %}
+{% block content %}
+<header>
+    <div class="header-content">
+        <h1>Keskustelu sovellus</h1>
+        <a href="/">Takaisin</a>
+    </div>
+</header>
 
-
-{% if messages %}
-<font size="+1">
-{% if admin == True %}
-    <p>
-    Haulla löytyi {{ messages|length }}
-    {% if messages|length == 1 %}
-        viesti
-    {% else %}
-        viestiä
-    {% endif %}
-    </p>
+<div class="container">
+<p>
+    <div class="message">
+    Käytit hakusanaa: {{ query }}
+    {% if messages %}
+        {% if admin == True %}
+            <p>
+            Haulla löytyi {{ messages|length }}
+            {% if messages|length == 1 %}
+                viesti
+            {% else %}
+                viestiä
+            {% endif %}
+        {% else %}
+            <p>
+            {% set messagelength = messages|length - counter %}
+            {% if messagelength == 1 %}
+            Haulla löytyi {{ messages|length - counter }}
+                viesti
+            {% elif messagelength == 0 %}
+                Ei viestejä haulla: {{ query }}
+            {% else %}
+            Haulla löytyi {{ messages|length - counter }}
+                viestiä
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+    <div class="container">
+        <p>
+        {% for message in messages %}
+        {% if message[8] == True and admin == False%}
+        {% else %}
+        <div class="message">
+            <b>Aihe: {{ message[1] }}</b>
+            {% if message[8] == True%}
+            (Yksityinen)
+            {% endif %}
+            {% if session.user_id %}
+            {% set is_favorite = message[0] in favorites %}
+                {% if is_favorite %}
+                    <form action="/remove_favorite" method="POST">
+                        <input type="hidden" name="message_id" value="{{ message[0] }}">
+                        <input type="hidden" name="user_id" value="{{ session.user_id }}">
+                        <input type="hidden" name="source" value="/result?query={{ query }}">
+                        <input id="favorite" type="submit" value="Poista suosikeista">
+                    </form>
+                {% else %}
+                    <form action="/add_favorite" method="POST">
+                        <input type="hidden" name="message_id" value="{{ message[0] }}">
+                        <input type="hidden" name="user_id" value="{{ session.user_id }}">
+                        <input type="hidden" name="source" value="/result?query={{ query }}">
+                        <input id="favorite" type="submit" value="Lisää suosikkeihin">
+                    </form>
+                {% endif %}
+            {% endif %}
+            <div class="content">
+            <i>Lähettäjä:</i> {{ message[4] }}
+            <p>
+            <i>Viesti:</i> {{ message[2] }}
+            <p>
+            <i>Lähetetty:</i> {{ message[5].strftime("%H:%M %d-%m-%Y") }}
+            {% if message[7] == True %}
+            (Muokattu)
+            {% endif %}
+            </div>
+            <p>
+            <a href="/message/{{ message[0] }}">Mene viestiin</a> Vastauksia: {{ message[6] }}<br>
+            
+            {% if message[3] == session.user_id %}
+            <form action="/edit_message/{{ message[0] }}?user_id={{ message[3] }}" method="GET">
+                <input type="hidden" name="message_id" value="{{ message[0] }}">
+                <input id="button" type="submit" value="Muokkaa viestiä">
+            </form> 
+            {% endif %}
+            {% if message[3] == session.user_id or admin == True %}
+            <form action="/delete_message" method="POST">
+                <input type="hidden" name="user_id" value="{{ message[3] }}">
+                <input type="hidden" name="message_id" value="{{ message[0] }}">
+                <input id="button" type="submit" value="Poista viesti">
+            </form>    
+            {% endif %}
+        {% endif %}
+        </div>
+        {% endfor %}
+        </p>
+    </div>
 {% else %}
-    <p>
-    {% set messagelength = messages|length - counter %}
-    {% if messagelength == 1 %}
-    Haulla löytyi {{ messages|length - counter }}
-        viesti
-    {% elif messagelength == 0 %}
-        Ei viestejä haulla: {{ query }}
-    {% else %}
-    Haulla löytyi {{ messages|length - counter }}
-        viestiä
-    </p>
-    {% endif %}
+    <div class="message">
+    Ei viestejä haulla: {{ query }}
+    </div>
 {% endif %}
-</font>
-<hr>
-{% for message in messages %}
-{% if message[8] == True and admin == False%}
-{% else %}
-    <font size="+2">Aihe: {{ message[1] }}</font>
-    <p>
-    <i>Viesti:</i> {{ message[2] }}
-    <p>
-    <i>Lähettäjä:</i> {{ message[4] }}
-    <p>
-    <i>Aika:</i> {{ message[5].strftime("%H:%M %d-%m-%Y") }}
-    {% if message[7] == True %}
-    (Muokattu)
-    {% endif %}
-    <p>
-    <a href="/message/{{ message[0] }}">Mene viestiin</a> Vastauksia: {{ message[6] }}
-    {% if message[3] == session.user_id %}
-    <p>
-    <form action="/edit_message/{{ message[0] }}?user_id={{ message[3] }}" method="GET">
-        <input type="hidden" name="message_id" value="{{ message[0] }}">
-        <input type="submit" value="Muokkaa viestiä">
-    </form> 
-    {% endif %}
-    {% if message[3] == session.user_id or admin == True %}
-    <p>
-    <form action="/delete_message" method="POST">
-        <input type="hidden" name="user_id" value="{{ message[3] }}">
-        <input type="hidden" name="message_id" value="{{ message[0] }}">
-        <input type="submit" value="Poista viesti">
-    </form>    
-    {% endif %}
-    <hr>
-{% endif %}
-{% endfor %}
-{% else %}
-<font size="+1">
-<p>Ei viestejä haulla: {{ query }}</p>
-</font>
-{% endif %}
+{% endblock %}

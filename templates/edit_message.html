@@ -9,7 +9,7 @@
 
 <div class="container">
 <p>
-<form id="answer" action="/edit_message/{{ message.id }}" method="POST" onsubmit="return check(this)">
+<form id="post" action="/edit_message/{{ message.id }}" method="POST" onsubmit="return check(this)">
     <p>Muuta aihetta: <br>
     <textarea name="new_topic" rows="3" cols="40">{{ message.topic }}</textarea>
     <br>

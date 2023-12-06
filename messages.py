@@ -148,7 +148,7 @@ def get_polls():
     sql = text("SELECT P.id, P.topic, P.user_id, U.username, P.created_at "
                "FROM polls P "
                "JOIN users U ON P.user_id = U.id "
-               "GROUP BY P.id, U.username ORDER BY P.id")
+               "GROUP BY P.id, U.username ORDER BY P.id DESC")
     result = db.session.execute(sql)
     return result.fetchall()
 
