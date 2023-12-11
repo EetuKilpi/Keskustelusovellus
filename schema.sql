@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    username TEXT UNIQUE,
-    password TEXT,
+    username TEXT NOT NULL CHECK (LENGTH(username) >= 3) UNIQUE,
+    password TEXT NOT NULL CHECK (LENGTH(password) >= 3),
     admin BOOLEAN DEFAULT FALSE
 );
 

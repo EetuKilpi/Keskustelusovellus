@@ -41,57 +41,58 @@
         {% endif %}
     </div>
     </p>
-        <b>Vastaukset:</b>
-        <hr><p>
-        {% for answer in answers %}
-        <div class="message">
-            <div class="content">
-            <i>Lähettäjä:</i> {{ answer[3] }}
-            <p>
-            <i>Viesti:</i> {{ answer[1] }}
-            <p>
-            <i>Lähetetty:</i> {{ answer[4].strftime("%H:%M %d-%m-%Y") }}
-            {% if answer[5] == True %}
-            (Muokattu)
-            {% endif %}
-            </div>
 
-            {% if answer[2] == session.user_id %}
+    <b>Vastaukset:</b>
+    <hr><p>
+    {% for answer in answers %}
+    <div class="message">
+        <div class="content">
+        <i>Lähettäjä:</i> {{ answer[3] }}
+        <p>
+        <i>Viesti:</i> {{ answer[1] }}
+        <p>
+        <i>Lähetetty:</i> {{ answer[4].strftime("%H:%M %d-%m-%Y") }}
+        {% if answer[5] == True %}
+        (Muokattu)
+        {% endif %}
+        </div>
+
+        {% if answer[2] == session.user_id %}
             <form action="/edit_answer/{{ answer[0] }}?message_id={{ message[0] }}&user_id={{ answer[2] }}" method="GET">
                 <input type="hidden" name="message_id" value="{{ message[0] }}">
                 <input id="button" type="submit" value="Muokkaa vastausta">
             </form>
-            {% endif %}
-            {% if answer[2] == session.user_id or admin == True %}
+        {% endif %}
+        {% if answer[2] == session.user_id or admin == True %}
             <form action="/delete_answer" method="POST">
                 <input type="hidden" name="user_id" value="{{ answer[2] }}">
                 <input type="hidden" name="answer_id" value="{{ answer[0] }}">
                 <input type="hidden" name="message_id" value="{{ message[0] }}">
                 <input id="button" type="submit" value="Poista vastaus">
             </form>
-            {% endif %}
-        </div>
-        {% endfor %}
-
-        {% if session.user_id %}
-            <form id="answer" action="/answer" method="POST" onsubmit="return check(this)">
-                <p>Uusi vastaus: <br>
-                    <textarea name="text" rows="5" cols="40"></textarea>
-                    <br>
-                    <input type="submit" value="Lähetä">
-                    <input type="hidden" name="id" value="{{ message[0] }}">
-            </form>
-
-            <script>
-                function check(form) {
-                    if (form.text.value.length > 5000) {
-                        alert("Viesti on liian pitkä");
-                        return false;
-                    }
-                    return true;
-                }
-                </script>
         {% endif %}
+    </div>
+    {% endfor %}
+
+    {% if session.user_id %}
+        <form id="answer" action="/answer" method="POST" onsubmit="return check(this)">
+            <p>Uusi vastaus: <br>
+                <textarea name="text" rows="5" cols="40"></textarea>
+                <br>
+                <input type="submit" value="Lähetä">
+                <input type="hidden" name="id" value="{{ message[0] }}">
+        </form>
+
+        <script>
+            function check(form) {
+                if (form.text.value.length > 5000) {
+                    alert("Viesti on liian pitkä");
+                    return false;
+                }
+                return true;
+            }
+            </script>
+    {% endif %}
     {% endif %}
 </div>
 {% endblock %}
